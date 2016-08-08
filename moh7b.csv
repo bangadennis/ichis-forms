@@ -1,0 +1,48 @@
+name,uid,code,shortName,description,formName,domainType,type,aggregationType,categoryComboUid,url,zeroIsSignificant
+MOH 7b Total Males,,,MOH 7b Total Males,,Total Males,AGGREGATE,INTEGER_ZERO_OR_POSITIVE,SUM,,,FALSE
+MOH 7b Total Females,,,MOH 7b Total Females,,Total Females,AGGREGATE,INTEGER_ZERO_OR_POSITIVE,SUM,,,FALSE
+MOH 7b Total number of children who slept under mosquito net last night ,,,MOH 7b Total number of children who slept under mo,,Total number of children who slept under mosquito net last night ,AGGREGATE,INTEGER_ZERO_OR_POSITIVE,SUM,,,FALSE
+MOH 7b Total number of child aged below 6 months EBF ,,,MOH 7b Total number of child aged below 6 months E,,Total number of child aged below 6 months EBF ,AGGREGATE,INTEGER_ZERO_OR_POSITIVE,SUM,,,FALSE
+MOH 7b Diarrhoea < 14 days,,,MOH 7b Diarrhoea < 14 days,,Diarrhoea < 14 days,AGGREGATE,INTEGER_ZERO_OR_POSITIVE,SUM,,,FALSE
+MOH 7b Fever < 7 days RDT + ve,,,MOH 7b Fever < 7 days RDT + ve,,Fever < 7 days RDT + ve,AGGREGATE,INTEGER_ZERO_OR_POSITIVE,SUM,,,FALSE
+MOH 7b Fever < 7 days RDT - ve,,,MOH 7b Fever < 7 days RDT - ve,,Fever < 7 days RDT - ve,AGGREGATE,INTEGER_ZERO_OR_POSITIVE,SUM,,,FALSE
+MOH 7b Fast breathing,,,MOH 7b Fast breathing,,Fast breathing,AGGREGATE,INTEGER_ZERO_OR_POSITIVE,SUM,,,FALSE
+MOH 7b Yellow on MUAC ,,,MOH 7b Yellow on MUAC ,,Yellow on MUAC ,AGGREGATE,INTEGER_ZERO_OR_POSITIVE,SUM,,,FALSE
+MOH 7b Cough for 14 days or more,,,MOH 7b Cough for 14 days or more,,Cough for 14 days or more,AGGREGATE,INTEGER_ZERO_OR_POSITIVE,SUM,,,FALSE
+MOH 7b Diarrhoea for 14 days or more,,,MOH 7b Diarrhoea for 14 days or more,,Diarrhoea for 14 days or more,AGGREGATE,INTEGER_ZERO_OR_POSITIVE,SUM,,,FALSE
+MOH 7b Blood in stool,,,MOH 7b Blood in stool,,Blood in stool,AGGREGATE,INTEGER_ZERO_OR_POSITIVE,SUM,,,FALSE
+MOH 7b Fever for 7 days or more (RDT+or -or not done),,,MOH 7b Fever for 7 days or more (RDT+or -or not do,,Fever for 7 days or more (RDT+or -or not done),AGGREGATE,INTEGER_ZERO_OR_POSITIVE,SUM,,,FALSE
+MOH 7b Convulsions,,,MOH 7b Convulsions,,Convulsions,AGGREGATE,INTEGER_ZERO_OR_POSITIVE,SUM,,,FALSE
+MOH 7b Not able to drink or feed at all,,,MOH 7b Not able to drink or feed at all,,Not able to drink or feed at all,AGGREGATE,INTEGER_ZERO_OR_POSITIVE,SUM,,,FALSE
+MOH 7b Vomits everything,,,MOH 7b Vomits everything,,Vomits everything,AGGREGATE,INTEGER_ZERO_OR_POSITIVE,SUM,,,FALSE
+MOH 7b Chest in-drawing,,,MOH 7b Chest in-drawing,,Chest in-drawing,AGGREGATE,INTEGER_ZERO_OR_POSITIVE,SUM,,,FALSE
+MOH 7b Unusually sleepy or unconscious,,,MOH 7b Unusually sleepy or unconscious,,Unusually sleepy or unconscious,AGGREGATE,INTEGER_ZERO_OR_POSITIVE,SUM,,,FALSE
+MOH 7b Red on MUAC,,,MOH 7b Red on MUAC,,Red on MUAC,AGGREGATE,INTEGER_ZERO_OR_POSITIVE,SUM,,,FALSE
+MOH 7b Swelling of both feet,,,MOH 7b Swelling of both feet,,Swelling of both feet,AGGREGATE,INTEGER_ZERO_OR_POSITIVE,SUM,,,FALSE
+MOH 7b Immunization required ,,,MOH 7b Immunization required ,,Immunization required ,AGGREGATE,INTEGER_ZERO_OR_POSITIVE,SUM,,,FALSE
+MOH 7b Neborn danger signs present,,,MOH 7b Neborn danger signs present,,Neborn danger signs present,AGGREGATE,INTEGER_ZERO_OR_POSITIVE,SUM,,,FALSE
+MOH 7b ORS(20.5g/ltr0;  Sachets,,,MOH 7b ORS(20.5g/ltr0;  Sachets,,ORS(20.5g/ltr0;  Sachets,AGGREGATE,INTEGER_ZERO_OR_POSITIVE,SUM,,,FALSE
+MOH 7b ZINC (20mg)' Tabs,,,MOH 7b ZINC (20mg)' Tabs,,ZINC (20mg)' Tabs,AGGREGATE,INTEGER_ZERO_OR_POSITIVE,SUM,,,FALSE
+MOH 7b AMOXYCILLIN (125mg/5mls); Bottle,,,MOH 7b AMOXYCILLIN (125mg/5mls); Bottle,,AMOXYCILLIN (125mg/5mls); Bottle,AGGREGATE,INTEGER_ZERO_OR_POSITIVE,SUM,,,FALSE
+MOH 7b ACTs (6s),,,MOH 7b ACTs (6s),,ACTs (6s),AGGREGATE,INTEGER_ZERO_OR_POSITIVE,SUM,,,FALSE
+MOH 7b ACTs (12s),,,MOH 7b ACTs (12s),,ACTs (12s),AGGREGATE,INTEGER_ZERO_OR_POSITIVE,SUM,,,FALSE
+MOH 7b Albendasole (ABZ); Tabs,,,MOH 7b Albendasole (ABZ); Tabs,,Albendasole (ABZ); Tabs,AGGREGATE,INTEGER_ZERO_OR_POSITIVE,SUM,,,FALSE
+MOH 7b Paracetamol; Tabs,,,MOH 7b Paracetamol; Tabs,,Paracetamol; Tabs,AGGREGATE,INTEGER_ZERO_OR_POSITIVE,SUM,,,FALSE
+MOH 7b Tetracycline Eye Ointment (TEO); 1%; tube,,,MOH 7b Tetracycline Eye Ointment (TEO); 1%; tube,,Tetracycline Eye Ointment (TEO); 1%; tube,AGGREGATE,INTEGER_ZERO_OR_POSITIVE,SUM,,,FALSE
+MOH 7b Combine Oral Contraceptives (COC); pills,,,MOH 7b Combine Oral Contraceptives (COC); pills,,Combine Oral Contraceptives (COC); pills,AGGREGATE,INTEGER_ZERO_OR_POSITIVE,SUM,,,FALSE
+MOH 7b Chlorine/floculant,,,MOH 7b Chlorine/floculant,,Chlorine/floculant,AGGREGATE,INTEGER_ZERO_OR_POSITIVE,SUM,,,FALSE
+MOH 7b Chlorine tabs,,,MOH 7b Chlorine tabs,,Chlorine tabs,AGGREGATE,INTEGER_ZERO_OR_POSITIVE,SUM,,,FALSE
+MOH 7b DPD tabs,,,MOH 7b DPD tabs,,DPD tabs,AGGREGATE,INTEGER_ZERO_OR_POSITIVE,SUM,,,FALSE
+MOH 7b Male condoms,,,MOH 7b Male condoms,,Male condoms,AGGREGATE,INTEGER_ZERO_OR_POSITIVE,SUM,,,FALSE
+MOH 7b Female condoms,,,MOH 7b Female condoms,,Female condoms,AGGREGATE,INTEGER_ZERO_OR_POSITIVE,SUM,,,FALSE
+MOH 7b Dispensing envelops,,,MOH 7b Dispensing envelops,,Dispensing envelops,AGGREGATE,INTEGER_ZERO_OR_POSITIVE,SUM,,,FALSE
+MOH 7b Counselled ,,,MOH 7b Counselled ,,Counselled ,AGGREGATE,INTEGER_ZERO_OR_POSITIVE,SUM,,,FALSE
+MOH 7b Treated within 24 hrs of illness onset,,,MOH 7b Treated within 24 hrs of illness onset,,Treated within 24 hrs of illness onset,AGGREGATE,INTEGER_ZERO_OR_POSITIVE,SUM,,,FALSE
+MOH 7b Referred,,,MOH 7b Referred,,Referred,AGGREGATE,INTEGER_ZERO_OR_POSITIVE,SUM,,,FALSE
+MOH 7b Referral compliance ,,,MOH 7b Referral compliance ,,Referral compliance ,AGGREGATE,INTEGER_ZERO_OR_POSITIVE,SUM,,,FALSE
+MOH 7b Referral compliance more than 24hrs,,,MOH 7b Referral compliance more than 24hrs,,Referral compliance more than 24hrs,AGGREGATE,INTEGER_ZERO_OR_POSITIVE,SUM,,,FALSE
+MOH 7b Recovered,,,MOH 7b Recovered,,Recovered,AGGREGATE,INTEGER_ZERO_OR_POSITIVE,SUM,,,FALSE
+MOH 7b Died,,,MOH 7b Died,,Died,AGGREGATE,INTEGER_ZERO_OR_POSITIVE,SUM,,,FALSE
+MOH 7b Averse Rug Reaction ADR,,,MOH 7b Averse Rug Reaction ADR,,Averse Rug Reaction ADR,AGGREGATE,INTEGER_ZERO_OR_POSITIVE,SUM,,,FALSE
+MOH 7b Defaulter,,,MOH 7b Defaulter,,Defaulter,AGGREGATE,INTEGER_ZERO_OR_POSITIVE,SUM,,,FALSE
+MOH 7b Remarks/Comments,,,MOH 7b Remarks/Comments,,Remarks/Comments,AGGREGATE,INTEGER_ZERO_OR_POSITIVE,SUM,,,FALSE
