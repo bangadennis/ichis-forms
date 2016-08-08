@@ -32,82 +32,36 @@ ul, ol{ margin-top: 0; margin-bottom: 0; }
         //Monthly Period Dimensions
          var period_dimensions=period+"01;"+period+"02;"+period+"03;"+period+"04;"+period+"05;"+period+"06;"+period+"07;"+period+"08;"+period+"09;"+period+"10;"+period+"11;"+period+"12;"+period;
 
-        //table 1 Variables
+        //table 1 Auto Sum Variables
         var total_elderly_male=0;
         var total_elderly_female=0;
         var total_elderly=0;
 
+
+        //Pulling data for Table 1
           $.get( "../api/analytics.json?dimension=pe:"+period+"&dimension=dx:WqJXsMFDPpQ;hCcu1xAv3bI;rAwViQF17ge;gJ7ahmppSp0;LLL04UjeQMc;zbfcBEJhe71;pHSZzHLUVam;NUOOjIstL0X;cXiBZWxOvc0;YzgjqLaYRN8;KehdJnbEimM;RBrEF1oTpRP;E4FMoqgh6OQ;jmKKCvgeIGV&filter=ou:"+orgUnitId+"&displayProperty=NAME&outputIdScheme=CODE", function( table1) {
           	if(table1){
 
           		if(table1.rows.length>0){
 
           			jQuery.each(table1.rows, function(index,item){
-          				
-          				if(item[0]=="WqJXsMFDPpQ")
+
+          				var item_id=item[0];
+                  var item_value=item[2];
+        
+          				if(item_id)
           				{
-                    $('#WqJXsMFDPpQ').html(item[2]);
-          				}
-          				
-          				if(item[0]=="hCcu1xAv3bI")
-          				{
-                    $('#hCcu1xAv3bI').html(item[2]);
+                    $('#'+item_id).html(item_value);
           				}
 
-          				if(item[0]=="rAwViQF17ge")
+          				if(item_id=="KehdJnbEimM")
           				{
-                    $('#rAwViQF17ge').html(item[2]);
-
+          					total_elderly_male=Number(item_value);
           				}
 
-                  if(item[0]=="E4FMoqgh6OQ")
-                  {
-                    $('#E4FMoqgh6OQ').html(item[2]);
-
-                  }
-
-          				if(item[0]=="gJ7ahmppSp0")
+          				if(item_id=="RBrEF1oTpRP")
           				{
-                    $('#gJ7ahmppSp0').html(item[2]);
-          				}
-          				if(item[0]=="LLL04UjeQMc")
-          				{
-                    $('#LLL04UjeQMc').html(item[2]);
-          				}
-          				if(item[0]=="zbfcBEJhe71")
-          				{
-                    $('#zbfcBEJhe71').html(item[2]);
-          				}
-          				if(item[0]=="pHSZzHLUVam")
-          				{
-                    $('#pHSZzHLUVam').html(item[2]);
-          				}
-          				if(item[0]=="NUOOjIstL0X")
-          				{
-                    $('#NUOOjIstL0X').html(item[2]);
-          				}
-          				if(item[0]=="cXiBZWxOvc0")
-          				{
-                    $('#cXiBZWxOvc0').html(item[2]);
-          				}
-          				if(item[0]=="YzgjqLaYRN8")
-          				{
-                    $('#YzgjqLaYRN8').html(item[2]);
-          				}
-
-          				if(item[0]=="KehdJnbEimM")
-          				{
-          					total_elderly_male=Number(item[2]);
-          				}
-
-          				if(item[0]=="RBrEF1oTpRP")
-          				{
-                    total_elderly_female=Number(item[2]);
-          				}
-
-          				if(item[0]=="jmKKCvgeIGV")
-          				{
-                    $('#jmKKCvgeIGV').html(item[2]);
+                    total_elderly_female=Number(item_value);
           				}
 
                   //total elderly
@@ -121,37 +75,89 @@ ul, ol{ margin-top: 0; margin-bottom: 0; }
           	}
     	});  
 
-      //table2 variables
-         $.get( "../api/analytics.json?dimension=pe:"+period_dimensions+"&dimension=dx:z7cRe2i9cWJ;kMhge5m1Xa0;jmKKCvgeIGV;E4FMoqgh6OQ;qXrAAxgZ6dX;Q5XUu9uWbQu;INIZMIA9k97;pjbanhwa0tt;F5zABMuxzLv;iwiyXaCVwwX;Dm4cJs7nrix&filter=ou:"+orgUnitId+"&displayProperty=NAME&outputIdScheme=CODE", function( table2) {
+      //Pulling data for Table 2
+         $.get( "../api/analytics.json?dimension=pe:"+period_dimensions+"&dimension=dx:z7cRe2i9cWJ;kMhge5m1Xa0;jmKKCvgeIGV;E4FMoqgh6OQ;qXrAAxgZ6dX;Q5XUu9uWbQu;INIZMIA9k97;pjbanhwa0tt;F5zABMuxzLv;iwiyXaCVwwX;Dm4cJs7nrix&filter=ou:"+orgUnitId+"&displayProperty=NAME&outputIdScheme=CODE", function(table2) {
             if(table2){
 
               if(table2.rows.length>0){
 
-                jQuery.each(table2.rows, function(index,item){
+                jQuery.each(table2.rows, function(index, item){
                   
                   var item_id=item[0];
                   var item_period=item[1];
+                  var item_value=item[2];
+
+                  //monthly
                   if(item_period.length>4){
                     
-                    month_suffix=item_period.substr(item_period.length-2);
+                    var month_suffix=item_period.substr(item_period.length-2);
+
+                    var table_index="#"+item_id+"_"+month_suffix;
 
                     if(month_suffix)
                     {
-                      $("#"+item_id+"_"+month_suffix).html(item[2]);
+                      $(table_index).html(item_value);
                     }
 
                   }
+                  //yearly Totals
                   else
                   {
 
+                    var table_index="#"+item_id+"_total";
+
                     if(item_period)
                     {
-                      $("#"+item_id+"_"+item_period).html(item[2]);
+                      $(table_index).html(item_value);
                     }
 
                   }
                   
+                });
+
+              }
+
+            }
+      });  
+
+
+         //Pulling data for Table 3
+         $.get( "../api/analytics.json?dimension=pe:"+period_dimensions+"&dimension=dx:k0e3q9kQ5pq;Ts3RQTAPafZ;ffoEtfNP7aB;xE9QoB2R4ge;szrNZzDMBmY;CGTv9rSWK2u;DIBwR7EclKF;HG15N4zCpnI;cclyW5o7dHF;hxDmBUxZXO0;W31DcYASIwK;GXH6d7fZwJ4;SjPoInTqnu8&filter=ou:"+orgUnitId+"&displayProperty=NAME&outputIdScheme=CODE", function(table3) {
+            if(table3){
+
+              if(table3.rows.length>0){
+
+                jQuery.each(table3.rows, function(index, item){
                   
+                  var item_id=item[0];
+                  var item_period=item[1];
+                  var item_value=item[2];
+
+                  //monthly
+                  if(item_period.length>4){
+                    
+                    var month_suffix=item_period.substr(item_period.length-2);
+
+                    var table_index="#"+item_id+"_"+month_suffix;
+
+                    if(month_suffix)
+                    {
+                      $(table_index).html(item_value);
+                    }
+
+                  }
+                  //yearly Totals
+                  else
+                  {
+
+                    var table_index="#"+item_id+"_total";
+
+                    if(item_period)
+                    {
+                      $(table_index).html(item_value);
+                    }
+
+                  }
                   
                 });
 
@@ -508,67 +514,67 @@ ul, ol{ margin-top: 0; margin-bottom: 0; }
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.26667px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="z7cRe2i9cWJ_01">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="z7cRe2i9cWJ_02">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="z7cRe2i9cWJ_03">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="z7cRe2i9cWJ_04">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.26667px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="z7cRe2i9cWJ_05">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="z7cRe2i9cWJ_06">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="z7cRe2i9cWJ_07">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="z7cRe2i9cWJ_08">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.26667px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="z7cRe2i9cWJ_09">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="z7cRe2i9cWJ_10">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="z7cRe2i9cWJ_11">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="z7cRe2i9cWJ_12">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:98.13333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="z7cRe2i9cWJ_total">&nbsp;</span>
 						</p>
 					</td>
 				</tr>
@@ -580,67 +586,67 @@ ul, ol{ margin-top: 0; margin-bottom: 0; }
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.26667px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="kMhge5m1Xa0_01">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="kMhge5m1Xa0_02">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="kMhge5m1Xa0_03">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="kMhge5m1Xa0_04">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.26667px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="kMhge5m1Xa0_05">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="kMhge5m1Xa0_06">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="kMhge5m1Xa0_07">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="kMhge5m1Xa0_08">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.26667px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="kMhge5m1Xa0_09">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="kMhge5m1Xa0_10">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="kMhge5m1Xa0_11">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="kMhge5m1Xa0_12">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:98.13333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="kMhge5m1Xa0_total">&nbsp;</span>
 						</p>
 					</td>
 				</tr>
@@ -655,67 +661,67 @@ ul, ol{ margin-top: 0; margin-bottom: 0; }
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.26667px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="jmKKCvgeIGV_01">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="jmKKCvgeIGV_02">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="jmKKCvgeIGV_03">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="jmKKCvgeIGV_04">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.26667px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="jmKKCvgeIGV_05">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="jmKKCvgeIGV_06">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="jmKKCvgeIGV_07">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="jmKKCvgeIGV_08">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.26667px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="jmKKCvgeIGV_09">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="jmKKCvgeIGV_10">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="jmKKCvgeIGV_11">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="jmKKCvgeIGV_12">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:98.13333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="jmKKCvgeIGV_total">&nbsp;</span>
 						</p>
 					</td>
 				</tr>
@@ -727,67 +733,67 @@ ul, ol{ margin-top: 0; margin-bottom: 0; }
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.26667px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="E4FMoqgh6OQ_01">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="E4FMoqgh6OQ_02">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="E4FMoqgh6OQ_03">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="E4FMoqgh6OQ_04">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.26667px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="E4FMoqgh6OQ_05">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="E4FMoqgh6OQ_06">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="E4FMoqgh6OQ_07">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="E4FMoqgh6OQ_08">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.26667px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="E4FMoqgh6OQ_09">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="E4FMoqgh6OQ_10">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="E4FMoqgh6OQ_11">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="E4FMoqgh6OQ_12">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:98.13333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="E4FMoqgh6OQ_total">&nbsp;</span>
 						</p>
 					</td>
 				</tr>
@@ -799,67 +805,67 @@ ul, ol{ margin-top: 0; margin-bottom: 0; }
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.26667px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="qXrAAxgZ6dX_01">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="qXrAAxgZ6dX_02">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="qXrAAxgZ6dX_03">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="qXrAAxgZ6dX_04">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.26667px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="qXrAAxgZ6dX_05">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="qXrAAxgZ6dX_06">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="qXrAAxgZ6dX_07">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="qXrAAxgZ6dX_08">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.26667px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="qXrAAxgZ6dX_09">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="qXrAAxgZ6dX_10">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="qXrAAxgZ6dX_11">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="qXrAAxgZ6dX_12">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:98.13333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="qXrAAxgZ6dX_total">&nbsp;</span>
 						</p>
 					</td>
 				</tr>
@@ -871,67 +877,67 @@ ul, ol{ margin-top: 0; margin-bottom: 0; }
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.26667px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="Q5XUu9uWbQu_01">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="Q5XUu9uWbQu_02">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="Q5XUu9uWbQu_03">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="Q5XUu9uWbQu_04">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.26667px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="Q5XUu9uWbQu_05">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="Q5XUu9uWbQu_06">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="Q5XUu9uWbQu_07">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="Q5XUu9uWbQu_08">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.26667px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="Q5XUu9uWbQu_09">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="Q5XUu9uWbQu_10">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="Q5XUu9uWbQu_11">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="Q5XUu9uWbQu_12">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:98.13333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="Q5XUu9uWbQu_total">&nbsp;</span>
 						</p>
 					</td>
 				</tr>
@@ -943,67 +949,67 @@ ul, ol{ margin-top: 0; margin-bottom: 0; }
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.26667px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="INIZMIA9k97_01">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="INIZMIA9k97_02">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="INIZMIA9k97_03">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="INIZMIA9k97_04">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.26667px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="INIZMIA9k97_05">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="INIZMIA9k97_06">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="INIZMIA9k97_07">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="INIZMIA9k97_08">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.26667px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="INIZMIA9k97_09">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="INIZMIA9k97_10">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="INIZMIA9k97_11">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="INIZMIA9k97_12">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:98.13333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="INIZMIA9k97_total">&nbsp;</span>
 						</p>
 					</td>
 				</tr>
@@ -1015,67 +1021,67 @@ ul, ol{ margin-top: 0; margin-bottom: 0; }
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.26667px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="pjbanhwa0tt_01">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="pjbanhwa0tt_02">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="pjbanhwa0tt_03">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="pjbanhwa0tt_04">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.26667px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="pjbanhwa0tt_05">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="pjbanhwa0tt_06">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="pjbanhwa0tt_07">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="pjbanhwa0tt_08">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.26667px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="pjbanhwa0tt_09">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="pjbanhwa0tt_10">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="pjbanhwa0tt_11">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="pjbanhwa0tt_12">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:98.13333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="pjbanhwa0tt_total">&nbsp;</span>
 						</p>
 					</td>
 				</tr>
@@ -1233,67 +1239,67 @@ ul, ol{ margin-top: 0; margin-bottom: 0; }
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.26667px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="F5zABMuxzLv_01">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="F5zABMuxzLv_02">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="F5zABMuxzLv_03">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="F5zABMuxzLv_04">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.26667px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="F5zABMuxzLv_05">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="F5zABMuxzLv_06">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="F5zABMuxzLv_07">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="F5zABMuxzLv_08">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.26667px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="F5zABMuxzLv_09">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="F5zABMuxzLv_10">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="F5zABMuxzLv_11">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="F5zABMuxzLv_12">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:98.13333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="F5zABMuxzLv_total">&nbsp;</span>
 						</p>
 					</td>
 				</tr>
@@ -1305,67 +1311,67 @@ ul, ol{ margin-top: 0; margin-bottom: 0; }
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.26667px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="iwiyXaCVwwX_01">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="iwiyXaCVwwX_02">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="iwiyXaCVwwX_03">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="iwiyXaCVwwX_04">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.26667px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="iwiyXaCVwwX_05">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="iwiyXaCVwwX_06">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="iwiyXaCVwwX_07">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="iwiyXaCVwwX_08">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.26667px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="iwiyXaCVwwX_09">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="iwiyXaCVwwX_10">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="iwiyXaCVwwX_11">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="iwiyXaCVwwX_12">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:98.13333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="iwiyXaCVwwX_total">&nbsp;</span>
 						</p>
 					</td>
 				</tr>
@@ -1377,67 +1383,67 @@ ul, ol{ margin-top: 0; margin-bottom: 0; }
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.26667px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="Dm4cJs7nrix_01">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="Dm4cJs7nrix_02">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="Dm4cJs7nrix_03">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="Dm4cJs7nrix_04">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.26667px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="Dm4cJs7nrix_05">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="Dm4cJs7nrix_06">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="Dm4cJs7nrix_07">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="Dm4cJs7nrix_08">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.26667px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="Dm4cJs7nrix_09">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="Dm4cJs7nrix_10">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="Dm4cJs7nrix_11">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:43.33333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="Dm4cJs7nrix_12">&nbsp;</span>
 						</p>
 					</td>
 					<td style="vertical-align:top;border-top-style:solid;border-top-color:#000000;border-top-width:1pt;border-left-style:solid;border-left-color:#000000;border-left-width:1pt;border-right-style:solid;border-right-color:#000000;border-right-width:1pt;border-bottom-style:solid;border-bottom-color:#000000;border-bottom-width:1pt;padding-left:5.4pt;padding-right:5.4pt;padding-top:0pt;padding-bottom:0pt;width:98.13333px;">
 						<p style="text-align:left;page-break-inside:auto;page-break-after:auto;page-break-before:avoid;line-height:normal;margin-top:0pt;margin-bottom:0pt;">
-							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;">&nbsp;</span>
+							<span style="font-family:Arial;font-size:10pt;text-transform:none;font-weight:normal;font-style:normal;font-variant:normal;" id="Dm4cJs7nrix_total">&nbsp;</span>
 						</p>
 					</td>
 				</tr>
